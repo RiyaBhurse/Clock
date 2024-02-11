@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: url("https://img.freepik.com/free-vector/flower-background-desktop-wallpaper-cute-vector_53876-136877.jpg");
+        }
+        #clockContainer {
+            height: 300px;
+            width: 300px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: rgb(0, 0, 0);
+            border-radius: 50%;
+            background-image: url("https://static.vecteezy.com/system/resources/previews/010/839/385/non_2x/aesthetic-pastel-pink-gingham-checkers-cute-checkerboard-wallpaper-illustration-perfect-for-banner-wallpaper-backdrop-postcard-background-for-your-design-vector.jpg");
+            position: sticky;           
+
+
+        }
+
+        #secondHand {
+            height: 4px;
+            width: 125px;
+            border-style: solid;
+            border-color: rgb(0, 0, 0);
+            background-color: black;
+            position: absolute;
+            top: 146px;
+            left: 146px;
+            transform-origin: left;
+            transform: rotate(-90deg);
+            border-radius: 25%;
+
+
+        }
+
+        #minHand {
+            height: 4px;
+            width: 95px;
+            border-style: solid;
+            border-color: rgb(0, 0, 0);
+            background-color: black;
+            position: absolute;
+            top: 146px;
+            left: 146px;
+            transform-origin: left;
+            transform: rotate(-90deg);
+            border-radius: 25%;
+
+
+        }
+
+        #hourHand {
+            height: 4px;
+            width: 55px;
+            border-style: solid;
+            border-color: rgb(0, 0, 0);
+            background-color: black;
+            position: absolute;
+            top: 146px;
+            left: 146px;
+            transform-origin: left;
+            transform: rotate(-90deg);
+            border-radius: 25%;
+
+
+        }
+        #button{
+            border-width:10px ;
+            position: absolute;
+            font-size: 32px; 
+            height: 60px;
+            width: 120px;
+            top: 20px;
+            right: 10px;
+            background-color: rgb(106, 144, 160);
+        }
+
+        #StopWatchButton{
+            border-width:10px ;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 209px;
+            height: 60px;
+            font-size: 23px;
+            background-color: rgb(106, 144, 160);
+        }
+        #startButton{
+            border-width:10px ;
+            position: absolute;
+            top: 20px;
+            right:  140px;
+            height: 60px;
+            width: 120px;
+            background-color: rgb(106, 144, 160);
+            font-size: 32px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <button id="StopWatchButton"> Stop Watch</button>
+    <div id="clockContainer">
+        <div id="secondHand"></div>
+        <div id="minHand"></div>
+        <div id="hourHand"></div>
+    </div>
+    <button id="startButton">Start</button>
+    <button id="button">Pause</button>
+    <script>
+        let date = new Date();
+        let intervals = [];
+
+        let InitatesecondHand = function () {
+            let secondHand = document.getElementById("secondHand");
+            let seconds = date.getSeconds();
+            let tickSecond = function () {
+                seconds = (seconds + 1) % 60;
+                secondHand.style.transform = "rotate(" + (seconds * 6 - 90) + "deg)";
+            };
+            tickSecond();
+            let startClock = setInterval(tickSecond, 1000);
+            intervals.push(startClock);
+        }
+        InitatesecondHand();
+        //
+        let InitateMinHand = function () {
+            let minHand = document.getElementById("minHand");
+            let mins = date.getMinutes();
+            let tickSecondMin = function () {
+                mins = (mins + 1) % 60;
+                minHand.style.transform = "rotate(" + (mins * 6 - 90) + "deg)";
+            };
+            tickSecondMin();
+            let startClockMin = setInterval(tickSecondMin, 60000);
+            intervals.push(startClockMin);
+        }
+        InitateMinHand();
+        //
+        let InitateHourHand = function () {
+            let hourHand = document.getElementById("hourHand");
+            let hours = date.getHours();
+            let tickHourMin = function () {
+                hours = (hours + 1) % 60;
+                hourHand.style.transform = "rotate(" + (hours * 30 - 90) + "deg)";
+            };
+            tickHourMin();
+            let startClockHour = setInterval(tickHourMin, 3600000);
+            intervals.push(startClockHour);
+        }
+        InitateHourHand();
+
+        let paused = document.getElementById("button"); 
+        let pause = paused.addEventListener("click", () => {
+            for (let val of intervals) {
+                clearInterval(val);
+            }
+            // secondHand.style.transform = "rotate(" + (-90) + "deg)";
+            // minHand.style.transform = "rotate(" + (-90) + "deg)";
+            // hourHand.style.transform = "rotate(" + (-90) + "deg)";
+        });
+
+        let start = document.getElementById("startButton");
+        let startClock = start.addEventListener("click", () => {
+            date = new Date();
+            InitatesecondHand();
+            InitateMinHand();
+            InitateHourHand();
+        });
+
+        let stopWatch = document.getElementById("StopWatchButton");
+        stopWatch.addEventListener("click", () => {
+            window.location.href = "stopWatch.html";
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACoCAMAAABt9SM9AAAAA1BMVEWykW6j8OCgAAAAR0lEQVR4nO3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO8GxYgAAb0jQ/cAAAAASUVORK5CYII=");
+       }
+        #clockContainer {
+            height: 300px;
+            width: 300px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: rgb(0, 0, 0);
+            border-radius: 50%;
+            background-image: url("https://thumbs.dreamstime.com/b/abstract-gradient-vector-hand-drawn-leaf-doodle-pattern-metallic-gold-background-118148322.jpg");
+            position: sticky;           
+
+
+        }
+
+        #secondHand {
+            height: 4px;
+            width: 125px;
+            border-style: solid;
+            border-color: rgb(0, 0, 0);
+            background-color: black;
+            position: absolute;
+            top: 146px;
+            left: 146px;
+            transform-origin: left;
+            transform: rotate(-90deg);
+            border-radius: 25%;
+
+
+        }
+
+        #minHand {
+            height: 4px;
+            width: 95px;
+            border-style: solid;
+            border-color: rgb(0, 0, 0);
+            background-color: black;
+            position: absolute;
+            top: 146px;
+            left: 146px;
+            transform-origin: left;
+            transform: rotate(-90deg);
+            border-radius: 25%;
+
+
+        }
+
+        #hourHand {
+            height: 4px;
+            width: 55px;
+            border-style: solid;
+            border-color: rgb(0, 0, 0);
+            background-color: black;
+            position: absolute;
+            top: 146px;
+            left: 146px;
+            transform-origin: left;
+            transform: rotate(-90deg);
+            border-radius: 25%;
+
+
+        }
+
+        #StopWatchButton{
+            border-width:10px ;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 209px;
+            height: 60px;
+            font-size: 23px;
+            background-color: rgb(106, 144, 160);
+        }
+        #startButton{
+            border-width:10px ;
+            position: absolute;
+            top: 20px;
+            right:  10px;
+            height: 60px;
+            width: 200px;
+            background-color: rgb(106, 144, 160);
+            font-size: 32px;
+
+        }
+        #StartAgain{
+            border-width:10px ;
+            position: absolute;
+            top: 120px;
+            
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            background-color: rgb(0, 0, 0);
+
+        }
+    </style>
+</head>
+<body>
+    <button id="StopWatchButton"> Normal Watch</button>
+    <div id="clockContainer">
+        <div id="secondHand"></div>
+        <div id="minHand"></div>
+        <div id="hourHand"></div>
+    </div>
+    <button id="startButton">ReStart</button>
+    <button id="StartAgain"> </button>
+    <script>
+        // let date = new Date();
+        let intervals = [];
+
+        let InitatesecondHand = function () {
+            let secondHand = document.getElementById("secondHand");
+            let seconds = 0;
+            var tickSecond = function () {
+                // seconds = (seconds + 1) % 60;
+                secondHand.style.transform = "rotate(" + (seconds * 6 - 90) + "deg)";
+                seconds++;
+            };
+            tickSecond();
+            let startClock = setInterval(tickSecond, 1000);
+            intervals.push(startClock);
+            return tickSecond;
+        }
+        var tickSecond = InitatesecondHand();
+        //
+        let InitateMinHand = function () {
+            let minHand = document.getElementById("minHand");
+            let mins = 0;
+            var tickSecondMin = function () {
+                // mins = (mins + 1) % 60;
+                minHand.style.transform = "rotate(" + (mins * 6 - 90) + "deg)";
+                mins++;
+            };
+            tickSecondMin();
+            let startClockMin = setInterval(tickSecondMin, 60000);
+            intervals.push(startClockMin);
+            return tickSecondMin;
+        }
+        var tickSecondMin = InitateMinHand();
+        //
+        let InitateHourHand = function () {
+            let hourHand = document.getElementById("hourHand");
+            let hours =0;
+            var tickHourMin = function () {
+                hourHand.style.transform = "rotate(" + (hours * 30 - 90) + "deg)";
+                hours++;
+            };
+            tickHourMin();
+            let startClockHour = setInterval(tickHourMin, 3600000);
+            intervals.push(startClockHour);
+            return tickHourMin;
+        }
+        var tickHourMin = InitateHourHand();
+
+        let paused = document.getElementById("StartAgain");
+        let isClicked = false; 
+        let pause = paused.addEventListener("click", () => {
+            if(isClicked==false){
+                for (let val of intervals) {
+                    clearInterval(val);
+                }
+                isClicked = true;
+            }
+            else{
+                let startClock = setInterval(tickSecond, 1000);
+                intervals.push(startClock);
+                let startClockMin = setInterval(tickSecondMin, 60000);
+                intervals.push(startClockMin);
+                let startClockHour = setInterval(tickHourMin, 3600000);
+                intervals.push(startClockHour);
+                isClicked = false;
+            }
+                     
+        });
+
+        let start = document.getElementById("startButton");
+        let startClock = start.addEventListener("click", () => {
+            for (let val of intervals) {
+                clearInterval(val);
+            }
+            
+            seconds = 0;
+            mins = 0;
+            hours = 0;
+
+            InitatesecondHand();
+            InitateMinHand();
+            InitateHourHand();
+        });
+
+        let stopWatch = document.getElementById("StopWatchButton");
+        stopWatch.addEventListener("click", () => {
+            window.location.href = "index.html";
+        });
+       
+
+    </script>
+</body>
+</html>
